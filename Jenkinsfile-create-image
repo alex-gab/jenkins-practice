@@ -3,6 +3,13 @@ node {
 
     def customImage = docker.build("alexgab02/my-image:${env.BUILD_ID}")
     customImage.inside {
+        sh 'pwd'
+        sh 'ls -al'
         sh 'svn --version'
     }
+
+    withDockerRegistry(credentialsId: 'dockerhub') {
+        customImage.push()
+    }
+    
 }
